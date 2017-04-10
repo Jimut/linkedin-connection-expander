@@ -6,8 +6,8 @@ const By = webdriver.By;
 const until = webdriver.until;
 
 const driver = new webdriver.Builder()
-    .forBrowser('safari')
-    .build();
+  .forBrowser('safari')
+  .build();
 
 const logFile = '.log';
 
@@ -35,25 +35,26 @@ driver.executeScript('scrollBy(0, 1000)');
 let i = 0;
 
 function sendInvitations() {
-    console.log("Sending invite count: " + i);
-    driver.findElement(By.css(cardSelector))
-        .then(card => {
-            card.findElement(By.css(buttonSelector)).click();
-            return card.findElement(By.css(nameSelector));
-        })
-        .then(name => name.getText())
-        .then(text => {
-            console.log(text.trim());
-            fs.appendFile(logFile, text.trim() + '\n');
-        })
-        .then(_ => {
-            driver.executeScript('scrollBy(0, 1000)');
-            i++;
-        }).then(_ => {
-            setTimeout(sendInvitations, 500);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
+  console.log("Sending invite count: " + i);
+  driver.findElement(By.css(cardSelector))
+    .then(card => {
+      card.findElement(By.css(buttonSelector)).click();
+      return card.findElement(By.css(nameSelector));
+    })
+    .then(name => name.getText())
+    .then(text => {
+      console.log(text.trim());
+      fs.appendFile(logFile, text.trim() + '\n');
+    })
+    .then(_ => {
+      driver.executeScript('scrollBy(0, 1000)');
+      i++;
+    }).then(_ => {
+      setTimeout(sendInvitations, 500);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
+
 sendInvitations();
