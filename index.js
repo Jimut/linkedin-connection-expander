@@ -6,8 +6,8 @@ const By = webdriver.By;
 const until = webdriver.until;
 
 const driver = new webdriver.Builder()
-  .forBrowser('safari')
-  .build();
+    .forBrowser('safari')
+    .build();
 
 const logFile = '.log';
 
@@ -17,7 +17,7 @@ const cardSelector = '.mn-person-card.pymk-card:not(.mn-person-card--dismiss):no
 const nameSelector = '.mn-person-info__name';
 const buttonSelector = 'button[data-control-name="invite"]';
 
-driver.get('http://www.linkedin.com/');
+driver.get('https://www.linkedin.com/');
 
 driver.wait(until.elementLocated(By.xpath('//*[@id="login-email"]')), 100000);
 
@@ -27,29 +27,33 @@ driver.findElement(By.xpath('//*[@id="login-submit"]')).click();
 
 driver.wait(until.urlContains('feed'), 100000);
 
-driver.get('http://www.linkedin.com/mynetwork/');
+driver.get('https://www.linkedin.com/mynetwork/');
 
 driver.wait(until.elementLocated(By.css(cardSelector)), 100000);
+driver.executeScript('scrollBy(0, 1000)');
 
-let cardStore;
+let i = 0;
 
-for (let i = 0; i < 400; i++) {
-  driver.findElement(By.css(cardSelector))
-    .then(card => {
-      cardStore = card;
-      return cardStore.findElement(By.css(nameSelector));
-    })
-    .then(name => name.getText())
-    .then(text => {
-      console.log(text.trim());
-      fs.appendFile(logFile, text.trim() + '\n');
-      return cardStore.findElement(By.css(buttonSelector)).click();
-    })
-    .then(_ => driver.executeScript('scrollBy(0, 1000)'))
-    .then(_ => driver.wait(until.elementLocated(By.css(cardSelector)), 10 * 1000))
-    .catch(errCallback);
+function sendInvitations() {
+    console.log("Sending invite count: " + i);
+    driver.findElement(By.css(cardSelector))
+        .then(card => {
+            card.findElement(By.css(buttonSelector)).click();
+            return card.findElement(By.css(nameSelector));
+        })
+        .then(name => name.getText())
+        .then(text => {
+            console.log(text.trim());
+            fs.appendFile(logFile, text.trim() + '\n');
+        })
+        .then(_ => {
+            driver.executeScript('scrollBy(0, 1000)');
+            i++;
+        }).then(_ => {
+            setTimeout(sendInvitations, 500);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
 }
-
-function errCallback (err) {
-  console.error(err);
-}
+sendInvitations();
