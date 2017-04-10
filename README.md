@@ -19,5 +19,7 @@ N.B.: Test out Selenium before running this.
 4. Optional: Configure the `index.js`.
 5. Run `npm start`
 
+N.B. Do not move your mouse or press any keys during the automation process, or it will stop the process.
+
 ## Thank you
 Pull Requests are most welcomed. 😊
