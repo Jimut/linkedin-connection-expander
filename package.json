@@ -10,5 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "selenium-webdriver": "^3.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0"
   }
 }

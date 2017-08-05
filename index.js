@@ -13,7 +13,7 @@ const logFile = '.log';
 
 fs.appendFile(logFile, '\n\n' + new Date() + '\n\n');
 
-const cardSelector = '.mn-person-card.pymk-card:not(.mn-person-card--dismiss):not(mn-person-card--dismiss-complete)';
+const cardSelector = '.mn-pymk-list__card:not(.mn-pymk-list__card--dismissed)';
 const nameSelector = '.mn-person-info__name';
 const buttonSelector = 'button[data-control-name="invite"]';
 
